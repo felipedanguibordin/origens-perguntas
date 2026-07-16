@@ -10,7 +10,8 @@ let all, get, run, exec;
 if (TURSO_URL) {
   const { createClient } = require("@libsql/client");
   const client = createClient({
-    url: TURSO_URL,
+    // usa HTTP puro (stateless) — mais confiável em serverless que websocket
+    url: TURSO_URL.replace(/^libsql:/, "https:"),
     authToken: process.env.TURSO_AUTH_TOKEN,
   });
 
