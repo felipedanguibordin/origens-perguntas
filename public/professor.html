@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Origens — Painel do Professor</title>
+    <meta name="robots" content="noindex" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <!-- login -->
+    <div id="login-view" class="wrap">
+      <div class="login-card">
+        <h1>Painel do Professor</h1>
+        <p>Digite a senha para ver as perguntas da aula.</p>
+        <form id="login-form">
+          <div class="field">
+            <label for="f-password">Senha</label>
+            <input
+              type="password"
+              id="f-password"
+              required
+              autocomplete="current-password"
+              placeholder="••••••••"
+            />
+          </div>
+          <div class="form-error" id="login-error"></div>
+          <div class="form-actions" style="justify-content: center">
+            <button type="submit" class="btn">Entrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- painel -->
+    <div id="panel-view" class="wrap hidden">
+      <header class="admin-header">
+        <h1>Perguntas da aula</h1>
+        <div class="admin-actions">
+          <span class="badge" id="live-indicator">● ao vivo</span>
+          <button class="btn btn-ghost btn-sm" id="btn-logout">Sair</button>
+        </div>
+      </header>
+
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-title">Aguardando resposta</div>
+          <div class="stat-num" id="stat-pending">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Total de perguntas</div>
+          <div class="stat-num" id="stat-total">0</div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="chip active" data-filter="pending">Não respondidas</button>
+        <button class="chip" data-filter="answered">Respondidas</button>
+        <button class="chip" data-filter="all">Todas</button>
+      </div>
+
+      <section class="questions-list" id="questions-list">
+        <p class="muted" style="text-align: center">Carregando perguntas…</p>
+      </section>
+    </div>
+
+    <footer>Conferência Origens · Profundo e Constante</footer>
+
+    <script src="/js/professor.js"></script>
+  </body>
+</html>

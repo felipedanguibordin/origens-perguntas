@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conferência Origens — Perguntas</title>
+    <meta
+      name="description"
+      content="Envie sua pergunta sobre as aulas da Conferência Origens: Profundo e Constante."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="hero wrap">
+      <!-- arte oficial da conferência -->
+      <img
+        class="hero-logo"
+        src="/img/logo-profundo.png"
+        alt="Origens — Profundo e Constante"
+      />
+
+      <p class="hero-tag">Conferência · Perguntas</p>
+      <p class="hero-sub">
+        Ficou com alguma dúvida durante a aula? Envie sua pergunta abaixo — o
+        professor vai recebê-la na hora.
+      </p>
+    </header>
+
+    <main class="wrap">
+      <section class="question-card" id="question-section">
+        <form id="question-form">
+          <div class="field">
+            <label for="f-text">Sua pergunta</label>
+            <textarea
+              id="f-text"
+              name="text"
+              required
+              rows="5"
+              maxlength="2000"
+              placeholder="Escreva aqui a sua pergunta sobre a aula…"
+            ></textarea>
+            <p class="char-count muted" id="char-count">0 / 2000</p>
+          </div>
+
+          <div class="field">
+            <label for="f-name">Seu nome <span class="optional">(opcional)</span></label>
+            <input
+              type="text"
+              id="f-name"
+              name="name"
+              maxlength="120"
+              autocomplete="name"
+              placeholder="Deixe em branco para enviar como anônimo"
+            />
+          </div>
+
+          <div class="form-error" id="form-error"></div>
+
+          <div class="form-actions" style="justify-content: center">
+            <button type="submit" class="btn" id="btn-submit">
+              Enviar pergunta
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="question-card success hidden" id="success-section">
+        <span class="success-icon">🌊</span>
+        <h3>Pergunta enviada!</h3>
+        <p id="success-message">O professor vai recebê-la em instantes.</p>
+        <div class="form-actions" style="justify-content: center">
+          <button type="button" class="btn" id="btn-again">
+            Enviar outra pergunta
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer>Conferência Origens · Profundo e Constante</footer>
+
+    <script src="/js/app.js"></script>
+  </body>
+</html>

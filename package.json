@@ -1,0 +1,16 @@
+{
+  "name": "origens-perguntas",
+  "version": "1.0.0",
+  "description": "Envio de perguntas sobre as aulas da Conferência Origens — Profundidade & Constância",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.0",
+    "express": "^4.21.2"
+  }
+}
