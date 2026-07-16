@@ -1,9 +1,3 @@
-const loginView = document.getElementById("login-view");
-const panelView = document.getElementById("panel-view");
-const loginForm = document.getElementById("login-form");
-const loginError = document.getElementById("login-error");
-const passwordInput = document.getElementById("f-password");
-const btnLogout = document.getElementById("btn-logout");
 const statPending = document.getElementById("stat-pending");
 const statTotal = document.getElementById("stat-total");
 const questionsList = document.getElementById("questions-list");
@@ -12,75 +6,14 @@ const chips = document.querySelectorAll(".chip");
 
 const REFRESH_MS = 5000;
 
-let profKey = sessionStorage.getItem("profKey") || "";
 let questions = [];
 let filter = "pending";
-let pollTimer = null;
-
-// ------------------------------------------------------------ login
-loginForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  loginError.classList.remove("show");
-
-  const password = passwordInput.value;
-  try {
-    const res = await fetch("/api/prof/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      loginError.textContent = data.error || "Senha incorreta.";
-      loginError.classList.add("show");
-      return;
-    }
-    profKey = password;
-    sessionStorage.setItem("profKey", profKey);
-    enterPanel();
-  } catch {
-    loginError.textContent = "Falha de conexão. Tente novamente.";
-    loginError.classList.add("show");
-  }
-});
-
-btnLogout.addEventListener("click", () => {
-  sessionStorage.removeItem("profKey");
-  profKey = "";
-  clearInterval(pollTimer);
-  panelView.classList.add("hidden");
-  loginView.classList.remove("hidden");
-  passwordInput.value = "";
-});
-
-function enterPanel() {
-  loginView.classList.add("hidden");
-  panelView.classList.remove("hidden");
-  loadQuestions();
-  clearInterval(pollTimer);
-  pollTimer = setInterval(loadQuestions, REFRESH_MS);
-}
 
 // ------------------------------------------------------------ dados
-async function api(path, options = {}) {
-  const res = await fetch(path, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      "x-prof-key": profKey,
-      ...(options.headers || {}),
-    },
-  });
-  if (res.status === 401) {
-    btnLogout.click();
-    throw new Error("unauthorized");
-  }
-  return res;
-}
-
 async function loadQuestions() {
   try {
-    const res = await api("/api/prof/questions");
+    const res = await fetch("/api/prof/questions");
+    if (!res.ok) throw new Error("erro na resposta");
     const data = await res.json();
     questions = data.questions;
     statPending.textContent = data.pending;
@@ -88,11 +21,9 @@ async function loadQuestions() {
     liveIndicator.classList.remove("badge-closed");
     liveIndicator.textContent = "● ao vivo";
     render();
-  } catch (err) {
-    if (err.message !== "unauthorized") {
-      liveIndicator.classList.add("badge-closed");
-      liveIndicator.textContent = "● reconectando…";
-    }
+  } catch {
+    liveIndicator.classList.add("badge-closed");
+    liveIndicator.textContent = "● reconectando…";
   }
 }
 
@@ -174,13 +105,14 @@ questionsList.addEventListener("click", async (event) => {
   button.disabled = true;
   try {
     if (button.dataset.action === "toggle") {
-      await api(`/api/prof/questions/${id}`, {
+      await fetch(`/api/prof/questions/${id}`, {
         method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answered: !question.answered }),
       });
     } else if (button.dataset.action === "delete") {
       if (!confirm("Excluir esta pergunta?")) return;
-      await api(`/api/prof/questions/${id}`, { method: "DELETE" });
+      await fetch(`/api/prof/questions/${id}`, { method: "DELETE" });
     }
     await loadQuestions();
   } finally {
@@ -189,6 +121,5 @@ questionsList.addEventListener("click", async (event) => {
 });
 
 // ------------------------------------------------------------ init
-if (profKey) {
-  enterPanel();
-}
+loadQuestions();
+setInterval(loadQuestions, REFRESH_MS);

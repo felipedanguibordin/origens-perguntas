@@ -6,7 +6,7 @@ Plataforma para enviar perguntas sobre as aulas da Conferência Origens
 - **`/`** — página pública: campo de texto para a pergunta + nome opcional.
 - **`/professor.html`** — painel do professor: mostra as perguntas ao vivo
   (atualiza a cada 5 segundos), com filtros e botões de "respondida"/excluir.
-  Senha padrão: `origens2026` (mude com a variável `PROF_PASSWORD`).
+  Sem senha — só não divulgue o endereço para o público.
 
 ## Rodar localmente
 
@@ -52,7 +52,6 @@ gh repo create origens-perguntas --private --source=. --push
 4. Em **Environment variables**, adicione:
    - `TURSO_DATABASE_URL` = a URL `libsql://...` do passo 1
    - `TURSO_AUTH_TOKEN` = o token do passo 1
-   - `PROF_PASSWORD` = a senha que os professores vão usar
 5. Deploy. A URL fica tipo `https://origens-perguntas.onrender.com`.
 
 ### 4. Manter no ar na sexta e no sábado

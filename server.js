@@ -1,25 +1,10 @@
 const path = require("node:path");
-const crypto = require("node:crypto");
 const express = require("express");
 const db = require("./db");
 
 const PORT = process.env.PORT || 3001;
-const PROF_PASSWORD = process.env.PROF_PASSWORD || "origens2026";
 
 // ---------------------------------------------------------------- helpers
-function checkPassword(given) {
-  const a = crypto.createHash("sha256").update(String(given || "")).digest();
-  const b = crypto.createHash("sha256").update(PROF_PASSWORD).digest();
-  return crypto.timingSafeEqual(a, b);
-}
-
-function requireProf(req, res, next) {
-  if (!checkPassword(req.get("x-prof-key"))) {
-    return res.status(401).json({ error: "Senha inválida." });
-  }
-  next();
-}
-
 function questionRow(q) {
   return {
     id: Number(q.id),
@@ -71,16 +56,8 @@ app.post(
 );
 
 // ---- professor -------------------------------------------------------
-app.post("/api/prof/login", (req, res) => {
-  if (!checkPassword((req.body || {}).password)) {
-    return res.status(401).json({ error: "Senha incorreta." });
-  }
-  res.json({ ok: true });
-});
-
 app.get(
   "/api/prof/questions",
-  requireProf,
   ah(async (req, res) => {
     const rows = (
       await db.all("SELECT * FROM questions ORDER BY id DESC")
@@ -95,7 +72,6 @@ app.get(
 
 app.put(
   "/api/prof/questions/:id",
-  requireProf,
   ah(async (req, res) => {
     const id = Number(req.params.id);
     const question = await db.get("SELECT * FROM questions WHERE id = ?", [id]);
@@ -115,7 +91,6 @@ app.put(
 
 app.delete(
   "/api/prof/questions/:id",
-  requireProf,
   ah(async (req, res) => {
     const info = await db.run("DELETE FROM questions WHERE id = ?", [
       Number(req.params.id),
