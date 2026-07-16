@@ -18,51 +18,39 @@ npm start
 
 Localmente os dados ficam em `data/perguntas.db` (SQLite). Requer Node 22.5+.
 
-## Publicar (Render + Turso, tudo grátis)
+## Publicar (Vercel + Turso, tudo grátis)
 
-O plano grátis do Render desliga o serviço após 15 min sem uso e **apaga o
-disco** quando isso acontece — por isso as perguntas ficam guardadas no
-Turso (banco SQLite na nuvem), que não perde nada.
+As perguntas ficam guardadas no Turso (banco SQLite na nuvem); o site e a
+API rodam na Vercel como funções serverless (`api/index.js` + `vercel.json`).
+A Vercel não "dorme" e não pede cartão de crédito.
 
 ### 1. Criar o banco no Turso
 
 1. Crie uma conta em https://turso.tech (pode entrar com GitHub).
 2. Crie um banco (ex.: `origens-perguntas`) — pode ser pelo site.
-3. Copie a **URL do banco** (formato `libsql://origens-perguntas-xxxx.turso.io`)
-   e gere um **token** (botão "Create token" no painel do banco).
+3. Na página do banco (seção **Connect**), copie a **URL**
+   (formato `libsql://origens-perguntas-xxxx.turso.io`) e gere um **token**
+   com permissão **Read & Write** (botão "Create Token").
 
 ### 2. Subir o código no GitHub
 
 ```bash
-git init
+git init -b main
 git add .
 git commit -m "Plataforma de perguntas Origens"
-gh repo create origens-perguntas --private --source=. --push
+git remote add origin https://github.com/SEU-USUARIO/origens-perguntas.git
+git push -u origin main
 ```
 
-### 3. Criar o serviço no Render
+### 3. Criar o projeto na Vercel
 
-1. Crie uma conta em https://render.com (entre com GitHub).
-2. **New → Web Service** → escolha o repositório.
-3. Configure:
-   - **Runtime:** Node
-   - **Build command:** `npm install`
-   - **Start command:** `npm start`
-   - **Instance type:** Free
-4. Em **Environment variables**, adicione:
+1. Crie uma conta em https://vercel.com (**Continue with GitHub**).
+2. **Add New → Project** → **Import** no repositório `origens-perguntas`.
+3. Deixe **Framework Preset: Other** e os comandos de build em branco.
+4. Em **Environment Variables**, adicione:
    - `TURSO_DATABASE_URL` = a URL `libsql://...` do passo 1
    - `TURSO_AUTH_TOKEN` = o token do passo 1
-5. Deploy. A URL fica tipo `https://origens-perguntas.onrender.com`.
+5. **Deploy**. A URL fica tipo `https://origens-perguntas.vercel.app`.
 
-### 4. Manter no ar na sexta e no sábado
-
-O plano grátis "dorme" após 15 minutos sem acessos (o primeiro acesso depois
-disso demora ~50 s para acordar). Para não dormir durante o evento:
-
-1. Crie uma conta grátis em https://uptimerobot.com.
-2. Adicione um monitor **HTTP(s)** apontando para
-   `https://SEU-APP.onrender.com/healthz` com intervalo de **5 minutos**.
-
-Com isso o serviço fica acordado 24h — mais que suficiente para sexta e
-sábado. O volume de perguntas de uma conferência (centenas de envios) é
-tranquilo para o plano grátis dos dois serviços.
+Divulgue só a URL principal; o painel do professor fica em
+`/professor.html` (sem senha — não coloque esse link no telão).
