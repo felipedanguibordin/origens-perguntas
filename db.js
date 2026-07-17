@@ -5,14 +5,14 @@ const fs = require("node:fs");
 
 const TURSO_URL = process.env.TURSO_DATABASE_URL;
 
-let all, get, run, exec;
+let all, get, run, exec, mode;
 
 if (TURSO_URL) {
   const { createClient } = require("@libsql/client");
   const client = createClient({
     // usa HTTP puro (stateless) — mais confiável em serverless que websocket
-    url: TURSO_URL.replace(/^libsql:/, "https:"),
-    authToken: process.env.TURSO_AUTH_TOKEN,
+    url: TURSO_URL.trim().replace(/^libsql:/, "https:"),
+    authToken: (process.env.TURSO_AUTH_TOKEN || "").trim(),
   });
 
   all = async (sql, args = []) => (await client.execute({ sql, args })).rows;
@@ -25,8 +25,24 @@ if (TURSO_URL) {
   exec = async (sql) => {
     await client.executeMultiple(sql);
   };
+  mode = "turso";
 
   console.log("Banco: Turso (nuvem)");
+} else if (process.env.VERCEL) {
+  // Na Vercel não existe disco gravável: sem as variáveis do Turso não há
+  // banco. Não derruba a função — responde com erro claro.
+  const fail = async () => {
+    throw new Error(
+      "TURSO_DATABASE_URL não configurada nas Environment Variables da Vercel.",
+    );
+  };
+  all = fail;
+  get = fail;
+  run = fail;
+  exec = async () => {};
+  mode = "sem-banco";
+
+  console.error("Banco: NÃO CONFIGURADO (faltam variáveis do Turso)");
 } else {
   const { DatabaseSync } = require("node:sqlite");
   const dataDir = path.join(__dirname, "data");
@@ -38,8 +54,9 @@ if (TURSO_URL) {
   get = async (sql, args = []) => db.prepare(sql).get(...args);
   run = async (sql, args = []) => db.prepare(sql).run(...args);
   exec = async (sql) => db.exec(sql);
+  mode = "local";
 
   console.log("Banco: SQLite local (data/perguntas.db)");
 }
 
-module.exports = { all, get, run, exec };
+module.exports = { all, get, run, exec, mode };

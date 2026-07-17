@@ -117,8 +117,14 @@ app.delete(
   }),
 );
 
-// rota simples de saúde (útil para monitoramento)
-app.get("/api/healthz", (req, res) => res.json({ ok: true }));
+// rota simples de saúde (útil para monitoramento e diagnóstico)
+app.get("/api/healthz", (req, res) =>
+  res.json({
+    ok: true,
+    db: db.mode,
+    hasToken: Boolean(process.env.TURSO_AUTH_TOKEN),
+  }),
+);
 
 app.use((err, req, res, next) => {
   console.error(err);
