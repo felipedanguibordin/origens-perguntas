@@ -58,10 +58,13 @@ app.post(
 
     const cleanName = String(name || "").trim().slice(0, 120);
 
-    await db.run("INSERT INTO questions (text, name) VALUES (?, ?)", [
-      cleanText,
-      cleanName,
-    ]);
+    // grava o horário aqui (UTC) para não depender do relógio do banco
+    const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+
+    await db.run(
+      "INSERT INTO questions (text, name, created_at) VALUES (?, ?, ?)",
+      [cleanText, cleanName, createdAt],
+    );
 
     res.status(201).json({
       ok: true,
