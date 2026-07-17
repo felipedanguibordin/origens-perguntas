@@ -1,6 +1,6 @@
 # Perguntas — Conferência Origens
 
-Plataforma para enviar perguntas sobre as aulas da Conferência Origens
+Plataforma para enviar perguntas sobre as ministrações da Conferência Origens
 (Profundo e Constante).
 
 - **`/`** — página pública: campo de texto para a pergunta + nome opcional.

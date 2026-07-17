@@ -1,7 +1,7 @@
 {
   "name": "origens-perguntas",
   "version": "1.0.0",
-  "description": "Envio de perguntas sobre as aulas da Conferência Origens — Profundidade & Constância",
+  "description": "Envio de perguntas sobre as ministrações da Conferência Origens — Profundidade & Constância",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
