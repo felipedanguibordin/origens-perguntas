@@ -4,9 +4,9 @@ Plataforma para enviar perguntas sobre as aulas da Conferência Origens
 (Profundo e Constante).
 
 - **`/`** — página pública: campo de texto para a pergunta + nome opcional.
-- **`/professor.html`** — painel do professor: mostra as perguntas ao vivo
-  (atualiza a cada 5 segundos), com filtros e botões de "respondida"/excluir.
-  Sem senha — só não divulgue o endereço para o público.
+- **`/painel.html`** — painel de quem está ministrando: mostra as perguntas
+  ao vivo (atualiza a cada 5 segundos), com filtros e botões de
+  "respondida"/excluir. Sem senha — só não divulgue o endereço para o público.
 
 ## Rodar localmente
 
@@ -52,5 +52,5 @@ git push -u origin main
    - `TURSO_AUTH_TOKEN` = o token do passo 1
 5. **Deploy**. A URL fica tipo `https://origens-perguntas.vercel.app`.
 
-Divulgue só a URL principal; o painel do professor fica em
-`/professor.html` (sem senha — não coloque esse link no telão).
+Divulgue só a URL principal; o painel de perguntas fica em
+`/painel.html` (sem senha — não coloque esse link no telão).

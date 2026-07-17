@@ -12,7 +12,7 @@ let filter = "pending";
 // ------------------------------------------------------------ dados
 async function loadQuestions() {
   try {
-    const res = await fetch("/api/prof/questions");
+    const res = await fetch("/api/painel/questions");
     if (!res.ok) throw new Error("erro na resposta");
     const data = await res.json();
     questions = data.questions;
@@ -105,14 +105,14 @@ questionsList.addEventListener("click", async (event) => {
   button.disabled = true;
   try {
     if (button.dataset.action === "toggle") {
-      await fetch(`/api/prof/questions/${id}`, {
+      await fetch(`/api/painel/questions/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answered: !question.answered }),
       });
     } else if (button.dataset.action === "delete") {
       if (!confirm("Excluir esta pergunta?")) return;
-      await fetch(`/api/prof/questions/${id}`, { method: "DELETE" });
+      await fetch(`/api/painel/questions/${id}`, { method: "DELETE" });
     }
     await loadQuestions();
   } finally {

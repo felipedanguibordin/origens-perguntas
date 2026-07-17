@@ -68,14 +68,14 @@ app.post(
 
     res.status(201).json({
       ok: true,
-      message: "Pergunta enviada! O professor vai recebê-la em instantes.",
+      message: "Pergunta enviada! Em instantes vamos respondê-la.",
     });
   }),
 );
 
-// ---- professor -------------------------------------------------------
+// ---- painel de perguntas --------------------------------------------
 app.get(
-  "/api/prof/questions",
+  "/api/painel/questions",
   ah(async (req, res) => {
     const rows = (
       await db.all("SELECT * FROM questions ORDER BY id DESC")
@@ -89,7 +89,7 @@ app.get(
 );
 
 app.put(
-  "/api/prof/questions/:id",
+  "/api/painel/questions/:id",
   ah(async (req, res) => {
     const id = Number(req.params.id);
     const question = await db.get("SELECT * FROM questions WHERE id = ?", [id]);
@@ -108,7 +108,7 @@ app.put(
 );
 
 app.delete(
-  "/api/prof/questions/:id",
+  "/api/painel/questions/:id",
   ah(async (req, res) => {
     const info = await db.run("DELETE FROM questions WHERE id = ?", [
       Number(req.params.id),

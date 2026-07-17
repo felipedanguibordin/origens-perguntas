@@ -513,7 +513,7 @@ tr:last-child td { border-bottom: none; }
 
 .question-card textarea { min-height: 140px; }
 
-/* painel do professor */
+/* painel de perguntas */
 .questions-list {
   display: flex;
   flex-direction: column;
